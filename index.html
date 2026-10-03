@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Solana Airdrop Dashboard – Hylo · OnRe · Bulk</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Courier New",monospace;background:var(--bg);color:var(--tx);transition:background .3s}
+body[data-p=hylo]{--bg:#050b0b;--card:#0b1a1a;--bd:#17302f;--tx:#d9f5ef;--mu:#6f9a95;--ac:#14e0c0;--a2:#ff7a2b;--a3:#9b6bff;--btn:#06100f;--inp:#071414}
+body[data-p=onre]{--bg:#f4c20d;--card:#ffd84a;--bd:#c79a00;--tx:#1a1400;--mu:#6b5300;--ac:#111;--a2:#7a2d00;--a3:#4a3a00;--btn:#ffe98a;--inp:#fff0a8}
+body[data-p=bulk]{--bg:#c3c7ce;--card:#d9dce1;--bd:#9aa0aa;--tx:#14161a;--mu:#4e545e;--ac:#1d2430;--a2:#5a2fd0;--a3:#2f6b4f;--btn:#eceef1;--inp:#eceef1}
+.w{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
+.sw{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.sw button{font:inherit;letter-spacing:.12em;text-transform:uppercase;font-size:12px;padding:9px 18px;border-radius:999px;border:2px solid transparent;cursor:pointer;font-weight:700}
+.sw [data-s=hylo]{background:#050b0b;color:#14e0c0}.sw [data-s=onre]{background:#f4c20d;color:#111;border-color:#111}.sw [data-s=bulk]{background:#c3c7ce;color:#14161a;border-color:#14161a}
+.sw button.on{outline:3px solid var(--ac);outline-offset:2px}
+h1{text-align:center;margin:6px 0 4px;font-size:clamp(22px,5vw,38px);letter-spacing:.2em;color:var(--ac)}
+.sub{text-align:center;color:var(--mu);font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding-bottom:18px;border-bottom:1px solid var(--bd);margin-bottom:18px}
+.g{display:grid;gap:12px}.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mu)}
+.v{font-size:26px;font-weight:700;margin:6px 0 2px}.n{font-size:11px;color:var(--mu)}
+.v.a{color:var(--ac)}.v.b{color:var(--a2)}.v.p{color:var(--a3)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);margin:18px 0;border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:var(--card)}
+.tabs button{font:inherit;background:none;border:0;border-bottom:3px solid transparent;color:var(--mu);padding:14px 4px;cursor:pointer;font-size:13px;letter-spacing:.06em}
+.tabs button.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:700}
+h2{font-size:13px;letter-spacing:.25em;text-transform:uppercase;color:var(--ac);margin:0 0 14px}
+label{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);margin:14px 0 6px}
+input[type=number],input[type=date],select{width:100%;font:inherit;font-size:16px;padding:12px;border-radius:8px;border:1px solid var(--bd);background:var(--inp);color:var(--tx)}
+input[type=range]{width:100%;accent-color:var(--ac)}
+.row{display:flex;justify-content:space-between;align-items:center}.row b{color:var(--a2)}
+.sc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sc button{font:inherit;background:var(--btn);border:1px solid var(--bd);border-radius:10px;padding:12px 6px;color:var(--tx);cursor:pointer;text-align:center}
+.sc button.on{border-color:var(--a2);box-shadow:0 0 0 1px var(--a2)}
+.sc small{display:block;font-size:10px;letter-spacing:.2em;color:var(--mu)}.sc strong{font-size:20px;color:var(--a2)}
+.big{text-align:center;font-size:34px;font-weight:700;color:var(--a2);margin:8px 0}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px;min-width:460px}
+th{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--mu);text-align:left;padding:8px;border-bottom:1px solid var(--bd)}
+td{padding:11px 8px;border-bottom:1px solid var(--bd)}tr.hl td{background:rgba(128,128,128,.18)}
+.ref{text-align:center}.pill{display:inline-block;border:1px solid var(--a2);color:var(--a2);border-radius:999px;padding:4px 14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+.ref h3{color:var(--ac);letter-spacing:.2em;margin:12px 0 6px;font-size:20px}
+.lk{display:flex;gap:8px;align-items:center;background:var(--inp);border:1px solid var(--bd);border-radius:8px;padding:10px;font-size:12px;margin:10px 0;word-break:break-all;text-align:left}
+.lk span{flex:1}.lk button{font:inherit;font-size:11px;background:var(--btn);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:6px 10px;cursor:pointer}
+a.go{display:block;text-align:center;text-decoration:none;font-weight:700;letter-spacing:.15em;text-transform:uppercase;font-size:13px;padding:14px;border-radius:8px;background:var(--ac);color:var(--bg)}
+body[data-p=onre] a.go{color:#ffd84a}
+ul{margin:8px 0;padding-left:18px;line-height:1.7;font-size:13px}.warn{border-left:3px solid var(--a2);padding:8px 12px;font-size:12px;color:var(--mu);margin-top:12px}
+.hid{display:none}
+</style></head>
+<body data-p="hylo"><div class="w">
+<div class="sw" id="sw"></div>
+<h1 id="ttl"></h1><div class="sub" id="sub"></div>
+<div class="g g3" id="stats"></div>
+<div class="tabs" id="tabs"></div>
+
+<div id="t0">
+ <div class="g g2">
+  <div class="c"><h2>🎯 Your Position</h2>
+   <label id="l1"></label><input type="number" id="my" placeholder="e.g. 5200000">
+   <label id="l2"></label><input type="number" id="tot">
+   <div class="n" id="totn"></div>
+   <label id="l3"></label><input type="number" id="dly" placeholder="0">
+   <label>Farm until date</label><input type="date" id="end">
+   <div class="n" id="endn"></div>
+   <label class="row"><span>Airdrop allocation % of supply</span><b id="alv"></b></label><input type="range" id="al" min="1" max="50" value="20">
+   <label>Total token supply (millions)</label><input type="number" id="sup" value="1000">
+  </div>
+  <div class="c"><h2>✅ Valuation Scenario</h2>
+   <div class="sc" id="sc"></div>
+   <label class="row"><span>Custom FDV ($M)</span><b id="fdv"></b></label><input type="range" id="fr" min="10" max="2000" step="10" value="50">
+   <div class="c" style="margin-top:14px;text-align:center;background:transparent"><div class="k">Token price at selected FDV</div><div class="big" id="px"></div><div class="n" id="pxn"></div></div>
+  </div>
+ </div>
+ <div class="g g2" style="margin-top:12px">
+  <div class="c"><h2>📈 Projected Airdrop Outcome</h2>
+   <div class="g" style="grid-template-columns:1fr 1fr">
+    <div class="c"><div class="k">Your total points</div><div class="v a" id="o1">0</div><div class="n">incl. future farming</div></div>
+    <div class="c"><div class="k">Your share of pool</div><div class="v p" id="o2">0%</div><div class="n">of all user points</div></div>
+    <div class="c"><div class="k">Est. tokens</div><div class="v b" id="o3">0</div><div class="n" id="o3n"></div></div>
+    <div class="c"><div class="k">Est. USD value</div><div class="v a" id="o4">$0.00</div><div class="n" id="o4n"></div></div>
+   </div></div>
+  <div class="c"><h2>🎯 Valuation Scenario Matrix</h2><div class="tw"><table><thead><tr><th>Scenario</th><th>FDV</th><th>Price</th><th>Your tokens</th><th>USD</th></tr></thead><tbody id="mx"></tbody></table></div></div>
+ </div>
+</div>
+
+<div id="t1" class="hid"><div class="g g2">
+ <div class="c"><h2>⚡ Points Calculator</h2><div id="pc"></div></div>
+ <div class="c"><h2>Result</h2><div class="g" style="grid-template-columns:1fr 1fr">
+  <div class="c"><div class="k">Per day</div><div class="v a" id="r1">0</div></div>
+  <div class="c"><div class="k">Over period</div><div class="v b" id="r2">0</div></div></div>
+  <div class="n" style="margin-top:10px" id="rn"></div></div>
+</div></div>
+
+<div id="t2" class="hid"><div class="c"><h2>📊 Project Info</h2><div id="info"></div></div></div>
+
+<div class="c ref" style="margin-top:18px"><span class="pill">🎁 Referral program active</span>
+ <h3 id="rt"></h3><div class="n" id="rs" style="margin-bottom:12px"></div>
+ <div id="rl" style="max-width:640px;margin:0 auto"></div></div>
+<p class="n" style="text-align:center;margin-top:18px">Points ≠ confirmed tokens. All estimates are illustrative, based on editable assumptions. Not financial advice. Data pulled Oct 3, 2026 from DefiLlama, the OnRe leaderboard API and public reports.</p>
+</div>
+<script>
+var FD=[["🐻 Bear",50],["📊 Base",100],["📊 Base",150],["🐂 Bull",250],["🐂 Bull",500],["🌙 Moon",750],["🌙 Moon",1000]];
+var SC=[["Bear",50],["Base",150],["Bull",500],["Moon",1000]];
+var days=function(d){return Math.max(0,Math.floor((Date.now()-new Date(d))/864e5))};
+var P={
+hylo:{name:"HYLO",unit:"XP",title:"HYLO AIRDROP CALCULATOR",sub:"Solana DeFi · Season 1 active · $1.5M seed · Robot Ventures × Colosseum × Solana Ventures",
+ stats:[["Total raised","$1.5M","Seed round Aug 2025","a"],["Peak TVL","$100M","Late 2025 · fell to $22.8M end Q1 2026","b"],["Current TVL","$66.5M","DefiLlama Oct 2026 · +39% in 30d","a"],["Days active",days("2025-07-25")+"d","Since Jul 25, 2025","p"],["Ann. revenue","~$2.45M","DefiLlama trailing yr · 30d: $289K","b"],["Season","1 LIVE","Started Dec 5, 2025 · no end set","a"]],
+ tot:150e9,totn:"Assumption: ~150B (your original estimate). Hylo doesn't publish total XP.",alloc:20,sup:1000,l1:"Current XP balance",l2:"Est. total protocol XP (all users)",l3:"Your XP earned per day",
+ rates:[["xSOL / xBTC (leverage)",20],["hyUSD / hyloSOL+",5],["eHYUSD / hyloSOL / sHYUSD",1]],unitLbl:"USD position",
+ info:["Dual-token Solana protocol: hyUSD stablecoin backed by SOL LSTs, xSOL/xBTC leveraged exposure with no liquidations.","XP per $ per day: xSOL 20 · hyUSD 5 · hyloSOL+ 5 · eHYUSD / hyloSOL / sHYUSD 1.","eHYUSD (launched Jul 16, 2026) gives a 5–25% boost on Season 1 points.","Season 0 XP, crowns and boosts carry into Season 1; Kamino hyUSD vaults give up to 8× XP.","TVL path: ~$52M → $22.8M in Q1 2026 (SOL −33%), now $66.5M per DefiLlama (Oct 2026).","No confirmed $HYLO token or airdrop yet — points are speculative."],
+ rt:"START EARNING WITH HYLO",rs:"Use my referral link to get a +5% permanent XP boost on your account. I earn +10% of your total XP — we both win.",
+ refs:[["Hylo V2 (recommended)","https://v2.hylo.so/r/J7OGP7"],["Hylo V1 / Leverage","https://hylo.so/leverage?ref=J7OGP7"]]},
+onre:{name:"ONRE",unit:"pts",title:"ONRE POINTS DASHBOARD",sub:"Solana · Tokenized reinsurance · ONyc · Bermuda-regulated · Series A $5M",
+ stats:[["TVL","$303M","DefiLlama · +10.2% in 30d","a"],["ONyc APY","~11.0%","Week 40, 2026 radar","b"],["Ranked wallets","24,111","OnRe leaderboard API, Oct 3","a"],["#1 wallet","19.67B","Top-20 wallets ≈ 82.5B combined","p"],["#20 wallet","1.11B","#10 = 1.98B · #3 = 7.71B","b"],["Season","1 LIVE","Rewards season opened Sep 27","a"]],
+ tot:200e9,totn:"Placeholder: top 20 alone ≈ 82.5B (live API); full-pool total isn't published.",alloc:10,sup:1000,l1:"Current OnRe points",l2:"Est. total points (all users)",l3:"Your points earned per day",
+ rates:[["Hold ONyc (base)",1],["Liquidity provision (Orca / Raydium)",2],["Lending / borrowing (Kamino, Loopscale)",3],["Yield trading (Exponent YT)",4],["Looping (Kamino / Carrot, up to)",6]],unitLbl:"ONyc balance",
+ info:["ONyc is a yield-bearing token backed by a regulated reinsurance pool; NAV accrues daily. TVL $303M (DefiLlama), market cap ~$302M (Sep 17).","Points = ONyc exposure × days held × strategy multiplier. Positions are measured once a day.","Leaderboard (Oct 3): 24,111 ranked wallets. #1 holds 19.67B, #2 12.63B, #3 7.71B, #10 1.98B, #20 1.11B. Most top points come from Loopscale and Kamino positions.","⚠ The API shows a GLOBAL points multiplier of 0.0001 effective 2026-10-03 on some wallets. I couldn't find an announcement — verify on OnRe's Discord/X before relying on old accrual rates.","Multipliers here: hold 1× · LP 2× · lending 3× · yield trading 4–5× · looping up to 6× (looping is the oldest figure).","Your wallet: rewards.api.onre.finance/api/v1/points/wallet/&lt;address&gt;","No token confirmed; points feed the leaderboard and may inform future incentives."],
+ rt:"START FARMING ONRE",rs:"Use my referral link. Referral points update in real time as a referred user's ONyc balance changes, once the exposure requirement is met.",
+ refs:[["OnRe Leaderboard / Earn","https://app.onre.finance/earn/leaderboard?ref=LBX1YNPCN"]]},
+bulk:{name:"BULK",unit:"AURA",title:"BULK AURA DASHBOARD",sub:"Solana perp DEX · BulkBFT · Backed by Anatoly Yakovenko, Wintermute, Robot Ventures",
+ stats:[["Pre-deposits","$27.5M","Pre-mainnet total (per review)","a"],["Community alloc.","30%","Of supply · co-founder statement","b"],["Pre-mainnet AURA","~13.5M","1M/wk × 13 snapshots + 0.5M retro (est.)","a"],["Mainnet live",days("2026-09-05")+"d","Invite-only since Sep 5 · 0-fee to Oct 5","p"],["Referral","1 AURA / $100","Per eligible referee deposit held","b"],["Token","TBA","No $BULK token or formula yet","a"]],
+ tot:20e6,totn:"Assumption: ~13.5M pre-mainnet + mainnet trading/BulkSOL AURA. Bulk doesn't publish the total.",alloc:30,sup:1000,l1:"Current AURA balance",l2:"Est. total AURA (all users)",l3:"Your AURA earned per week",
+ pool:true,
+ info:["Perp DEX with matching built into the validator client (BulkBFT): 5–20ms fills, no gas, up to 20× margin.","Pre-mainnet: 1M AURA/week by deposit size × time (Saturday snapshots, from Jun 6). Pre-deposits reached ~$27.5M.","Since mainnet (Sep 5): trading volume is the main AURA lever (formula unpublished), plus BulkSOL holding (size × time) and referrals paid from a dedicated pool as referees trade.","Not confirmed: volume→AURA formula, whether the 1M/week pool still applies post-mainnet, AURA→token rate, invite-only end date, anti-sybil rules.","30% of supply is earmarked for the community (testnet + pre-deposit + mainnet combined) — not published tokenomics."],
+ rt:"START EARNING WITH BULK",rs:"Use my referral link to join Bulk. Referrals earn the referrer AURA as referred accounts deposit and trade.",
+ refs:[["Bulk referral","https://app.bulk.trade/ref/SNEAKYPEEK"]]}
+};
+var cur="hylo",$=function(i){return document.getElementById(i)},fm=function(n,d){return n.toLocaleString("en-US",{maximumFractionDigits:d==null?0:d})};
+var usd=function(n){return "$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:n<1?4:2})};
+var tabNames=[["🪂","Airdrop Calculator"],["⚡","Points Calculator"],["📊","Project Info"]];
+function show(i){for(var j=0;j<3;j++){$("t"+j).classList.toggle("hid",j!=i)}[].forEach.call($("tabs").children,function(b,j){b.classList.toggle("on",j==i)})}
+function render(k){
+ cur=k;var p=P[k];document.body.dataset.p=k;
+ $("sw").innerHTML=["hylo","onre","bulk"].map(function(s){return '<button data-s="'+s+'" class="'+(s==k?"on":"")+'">'+P[s].name+'</button>'}).join("");
+ [].forEach.call($("sw").children,function(b){b.onclick=function(){render(b.dataset.s)}});
+ $("ttl").textContent=p.title;$("sub").textContent=p.sub;
+ var cl={a:"a",b:"b",p:"p"};
+ $("stats").innerHTML=p.stats.map(function(s){return '<div class="c"><div class="k">'+s[0]+'</div><div class="v '+cl[s[3]]+'">'+s[1]+'</div><div class="n">'+s[2]+'</div></div>'}).join("");
+ $("tabs").innerHTML=tabNames.map(function(t){return '<button>'+t[0]+'<br>'+t[1]+'</button>'}).join("");
+ [].forEach.call($("tabs").children,function(b,j){b.onclick=function(){show(j)}});show(0);
+ $("l1").textContent=p.l1;$("l2").textContent=p.l2;$("l3").textContent=p.l3;
+ $("tot").value=p.tot;$("totn").textContent=p.totn;$("al").value=p.alloc;$("sup").value=p.sup;$("my").value="";$("dly").value="";
+ var e=new Date();e.setMonth(e.getMonth()+3);$("end").value=e.toISOString().slice(0,10);
+ $("sc").innerHTML=SC.map(function(s){return '<button data-f="'+s[1]+'"><small>'+s[0].toUpperCase()+'</small><strong>$'+s[1]+'M</strong><small>FDV</small></button>'}).join("");
+ [].forEach.call($("sc").children,function(b){b.onclick=function(){$("fr").value=b.dataset.f;calc()}});
+ $("fr").value=50;
+ $("info").innerHTML="<ul>"+p.info.map(function(i){return "<li>"+i+"</li>"}).join("")+'</ul><div class="warn">Check each protocol\'s own dashboard for the live multiplier and points figures before acting.</div>';
+ $("rt").textContent=p.rt;$("rs").textContent=p.rs;
+ $("rl").innerHTML=p.refs.map(function(r,i){return '<div class="k" style="text-align:left">'+r[0]+'</div><div class="lk"><span>'+r[1]+'</span><button data-c="'+r[1]+'">COPY</button></div><a class="go" target="_blank" rel="noopener" href="'+r[1]+'">↗ Open</a><div style="height:12px"></div>'}).join("");
+ [].forEach.call($("rl").querySelectorAll("button"),function(b){b.onclick=function(){cp(b.dataset.c,b)}});
+ // points calc
+ if(p.pool){$("pc").innerHTML='<label>Your deposit / BulkSOL ($)</label><input type="number" id="a1" value="1000"><label>Total pool deposits ($)</label><input type="number" id="a2" value="27500000"><label>Weeks</label><input type="number" id="a3" value="4">'}
+ else{$("pc").innerHTML='<label>Strategy</label><select id="a0">'+p.rates.map(function(r,i){return '<option value="'+r[1]+'">'+r[0]+' — '+r[1]+'×</option>'}).join("")+'</select><label>'+p.unitLbl+'</label><input type="number" id="a1" value="1000"><label>Days held</label><input type="number" id="a3" value="30"><label>Boost %</label><input type="number" id="a2" value="5">'}
+ [].forEach.call($("pc").querySelectorAll("input,select"),function(x){x.oninput=pc});
+ calc();pc();
+}
+function cp(t,b){var ok=function(){b.textContent="COPIED";setTimeout(function(){b.textContent="COPY"},1200)};
+ try{navigator.clipboard.writeText(t).then(ok,fb)}catch(e){fb()}
+ function fb(){var x=document.createElement("textarea");x.value=t;document.body.appendChild(x);x.select();try{document.execCommand("copy");ok()}catch(e){}document.body.removeChild(x)}}
+function pc(){var p=P[cur],a1=+$("a1").value||0,a2=+$("a2").value||0,a3=+$("a3").value||0;
+ if(p.pool){var wk=a2?1e6*a1/a2:0;$("r1").textContent=fm(wk/7,1);$("r2").textContent=fm(wk*a3,0);$("rn").textContent="Pre-mainnet model: 1M AURA/week split pro-rata by deposit. Post-mainnet AURA also depends on trading volume, BulkSOL and referrals (formula unpublished)."}
+ else{var d=a1*(+$("a0").value)*(1+a2/100);$("r1").textContent=fm(d,0);$("r2").textContent=fm(d*a3,0);$("rn").textContent="Points/day = amount × multiplier × (1 + boost). Rates per official docs; verify live values."}}
+function calc(){var p=P[cur],my=+$("my").value||0,tot=+$("tot").value||0,dl=+$("dly").value||0,al=+$("al").value,sup=(+$("sup").value||0)*1e6,fdv=(+$("fr").value)*1e6;
+ var d=Math.max(0,Math.floor((new Date($("end").value)-Date.now())/864e5)),per=p.pool?7:1,add=p.pool?dl*Math.ceil(d/7):dl*d;
+ $("endn").textContent="+"+d+" days · adds "+fm(add)+" "+p.unit+" from your positions";
+ $("alv").textContent=al+"%";$("fdv").textContent="$"+fm(+$("fr").value)+"M";
+ var mine=my+add,share=tot?mine/(tot+add):0,px=sup?fdv/sup:0;
+ [].forEach.call($("sc").children,function(b){b.classList.toggle("on",+b.dataset.f==+$("fr").value)});
+ $("px").textContent=usd(px);$("pxn").textContent="per "+p.name+" token · "+fm(sup/1e6)+"M total supply";
+ var tk=share*al/100*sup;
+ $("o1").textContent=fm(mine);$("o2").textContent=(share*100).toFixed(4)+"%";$("o3").textContent=fm(tk);$("o3n").textContent="at "+al+"% airdrop alloc";$("o4").textContent=usd(tk*px);$("o4n").textContent="at $"+fm(+$("fr").value)+"M FDV";
+ $("mx").innerHTML=FD.map(function(f){var pr=sup?f[1]*1e6/sup:0;return '<tr class="'+(f[1]==+$("fr").value?"hl":"")+'"><td>'+f[0]+'</td><td style="color:var(--a2);font-weight:700">$'+f[1]+'M</td><td>'+usd(pr)+'</td><td>'+fm(tk)+'</td><td style="color:var(--ac)">'+usd(tk*pr)+'</td></tr>'}).join("")}
+["my","tot","dly","end","al","sup","fr"].forEach(function(i){$(i).oninput=calc});
+render("hylo");
+</script></body></html>
